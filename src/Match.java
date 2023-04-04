@@ -133,6 +133,7 @@ public class Match {
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "The word have not enough", "Error", JOptionPane.ERROR_MESSAGE);
+                    butGid.setVisible(false);
                 }
                 for(JButton b : buts){
                     b.setEnabled(true);

@@ -87,7 +87,7 @@ public class FlashCards extends JFrame{
                         System.out.println("Add");
                     }
                     else if(e.getSource().equals(quizButton)){
-                        if(DB.getWorkbook().getNumberOfSheets() < 1){
+                        if(DB.getWorkbook().getNumberOfSheets() >= 1){
                             JPanel quizPanel = new QuizPage().panelS();
                             usePanel.get(0).setVisible(false);
                             if(usePanel.size()!=0){
@@ -102,7 +102,7 @@ public class FlashCards extends JFrame{
                         }
                     }
                     else if (e.getSource().equals(matchButton)) {
-                        if(DB.getWorkbook().getNumberOfSheets() < 1){
+                        if(DB.getWorkbook().getNumberOfSheets() >= 1){
                             JPanel MacthPanel = new Match().panelS();
                             usePanel.get(0).setVisible(false);
                             if(usePanel.size()!=0){

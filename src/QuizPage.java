@@ -147,6 +147,7 @@ public class QuizPage {
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "The word have not enough", "Error", JOptionPane.ERROR_MESSAGE);
+                    mid.setVisible(false);
                 }
             }
         });
