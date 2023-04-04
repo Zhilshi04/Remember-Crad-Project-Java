@@ -48,8 +48,8 @@ class Add {
         JPanel comPanel = new JPanel();
         JLabel textTitle = new JLabel("Title");
         JLabel textCom = new JLabel("Titel Selection");
-        JLabel textFont = new JLabel("Font Word");
-        JLabel textBack = new JLabel("Back Word");
+        JLabel textFont = new JLabel("Clue Word");
+        JLabel textBack = new JLabel("Guess Word");
         textTitle.setForeground(Color.white);
         textFont.setForeground(Color.white);
         textBack.setForeground(Color.white);
