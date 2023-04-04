@@ -12,6 +12,7 @@ import java.util.Random;
 public class QuizPage {
     private ArrayList<Word> words = new ArrayList<>();
     private ArrayList<Word> wordAll = new ArrayList<>();
+    private ArrayList<JButton> buttons = new ArrayList<>();
     private ArrayList<Word> wordUse = new ArrayList<>();
     private ExcelMangement DB;
     private static Color bgColor = new Color(78,78,78);
@@ -19,6 +20,7 @@ public class QuizPage {
     ArrayList<String> fontWord = new ArrayList<>();
     ArrayList<String> backWord = new ArrayList<>();
     private boolean comChecks = false;
+    private String wordUsed ;
 
     public QuizPage(){
         try {
@@ -35,13 +37,17 @@ public class QuizPage {
 
     public JPanel panelS(){
         JComboBox comboBox;
-        JLabel word = new JLabel("Test");
+        JLabel word = new JLabel();
         JPanel mid = new JPanel();
         JPanel buts = new JPanel();
         JButton b1 = new JButton("1");
         JButton b2 = new JButton("2");
         JButton b3 = new JButton("3");
         JButton b4 = new JButton("4");
+        buttons.add(b1);
+        buttons.add(b2);
+        buttons.add(b3);
+        buttons.add(b4);
         b1.setBackground(Color.gray);
         b2.setBackground(Color.gray);
         b3.setBackground(Color.gray);
@@ -91,7 +97,7 @@ public class QuizPage {
         });
         String sheetName = (String) comboBox.getSelectedItem();
         if (sheetName == null) {
-            JOptionPane.showMessageDialog(null, "Please select a sheet", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Selected sheet not found in the workbook", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Sheet sheet = DB.getWorkbook().getSheet(sheetName);
             if (sheet == null) {
@@ -108,7 +114,14 @@ public class QuizPage {
         confirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                fontWord.clear();
+                backWord.clear();
+                wordUse.clear();
+                for(JButton b : buttons){
+                    b.setBackground(Color.gray);
+                }
                 mid.setVisible(true);
+                int index = 0;
                 if(wordAll.size()>=4){
                     for(int i = 0;i<4;i++){
                         int randDom = random.nextInt(0,wordAll.size());
@@ -119,6 +132,17 @@ public class QuizPage {
                     }
                     System.out.println(fontWord.size()+"");
                     System.out.println(backWord.size()+"");
+                    int ix = random.nextInt(fontWord.size());
+                    wordUsed = fontWord.get(ix);
+                    word.setText(wordUsed);
+
+                    for(String s : backWord){
+                        System.out.println("back"+s);
+                    }
+                    for(JButton b : buttons){
+                        b.setText(backWord.get(index));
+                        index++;
+                    }
                     confirm.setEnabled(false);
                 }
                 else{
@@ -126,8 +150,22 @@ public class QuizPage {
                 }
             }
         });
-        for(int i = 0;i<4;i++){
-            System.out.println(fontWord.get(i)+" , "+backWord.get(i));
+        for(JButton b : buttons){
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    for(int i = 0;i<4;i++){
+                        if(fontWord.get(i).equalsIgnoreCase(wordUsed) && backWord.get(i).equalsIgnoreCase(b.getText())) {
+                            b.setBackground(Color.green);
+                            confirm.setEnabled(true);
+                        }
+                        else{
+                            continue;
+                        }
+
+                    }
+                }
+            });
         }
         comboBox.addActionListener(new ActionListener() {
             @Override

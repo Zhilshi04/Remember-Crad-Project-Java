@@ -13,9 +13,16 @@ public class FlashCards extends JFrame{
     private JPanel menuPanel;
     private JButton matchButton;
     private ArrayList<JButton> buts = new ArrayList<>();
+    private ExcelMangement DB;
 
 
     public FlashCards(){
+        try {
+             DB = new ExcelMangement(".\\data\\database.xlsx");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         ArrayList<JPanel> usePanel = new ArrayList<>();
         Font font = new Font("Tahoma", Font.PLAIN,10);
         UIManager.put("Button.font", font);
@@ -80,24 +87,34 @@ public class FlashCards extends JFrame{
                         System.out.println("Add");
                     }
                     else if(e.getSource().equals(quizButton)){
-                        JPanel quizPanel = new QuizPage().panelS();
-                        usePanel.get(0).setVisible(false);
-                        if(usePanel.size()!=0){
-                            usePanel.remove(0);
+                        if(DB.getWorkbook().getNumberOfSheets() < 1){
+                            JPanel quizPanel = new QuizPage().panelS();
+                            usePanel.get(0).setVisible(false);
+                            if(usePanel.size()!=0){
+                                usePanel.remove(0);
+                            }
+                            mainPanel.add(quizPanel);
+                            usePanel.add(quizPanel);
+                            System.out.println("Quiz");
                         }
-                        mainPanel.add(quizPanel);
-                        usePanel.add(quizPanel);
-                        System.out.println("Quiz");
+                        else{
+                            JOptionPane.showMessageDialog(null, "Selected sheet not found in the workbook or Sheet is not have data", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     else if (e.getSource().equals(matchButton)) {
-                        JPanel MacthPanel = new Match().panelS();
-                        usePanel.get(0).setVisible(false);
-                        if(usePanel.size()!=0){
-                            usePanel.remove(0);
+                        if(DB.getWorkbook().getNumberOfSheets() < 1){
+                            JPanel MacthPanel = new Match().panelS();
+                            usePanel.get(0).setVisible(false);
+                            if(usePanel.size()!=0){
+                                usePanel.remove(0);
+                            }
+                            mainPanel.add(MacthPanel);
+                            usePanel.add(MacthPanel);
+                            System.out.println("Macth");
                         }
-                        mainPanel.add(MacthPanel);
-                        usePanel.add(MacthPanel);
-                        System.out.println("Macth");
+                        else{
+                            JOptionPane.showMessageDialog(null, "Selected sheet not found in the workbook or Sheet is not have data", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     else if(e.getSource().equals(wordButton)){
                         JPanel wordPanel = new Words().panelS();

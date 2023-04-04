@@ -93,13 +93,19 @@ public class Words {
         table.setPreferredScrollableViewportSize(new Dimension(420, 340));
         c.setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
 
-
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (comboBox.getSelectedIndex() >= 0 && DB.getWorkbook().getSheet((String)comboBox.getSelectedItem()).getFirstRowNum() != DB.getWorkbook().getSheet((String)comboBox.getSelectedItem()).getLastRowNum()) {
-                    showWords.setEnabled(true);
-                } else {
+                Sheet sheet =DB.getWorkbook().getSheet((String)comboBox.getSelectedItem());
+                if(comboBox.getSelectedIndex() >= 0){
+                    if ((sheet.getRow(0) == null || sheet.getRow(0).getCell(0) == null || sheet.getRow(0).getCell(0).getStringCellValue() == null || sheet.getRow(0).getCell(0).getStringCellValue().equals(""))){
+                        showWords.setEnabled(false);
+                    }
+                    else {
+                        showWords.setEnabled(true);
+                    }
+                }
+                else {
                     showWords.setEnabled(false);
                 }
             }

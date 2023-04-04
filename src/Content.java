@@ -195,7 +195,7 @@ class Add {
                     JOptionPane.showMessageDialog(null, "Selected sheet not found in the workbook", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                else if(sheet.getRow(0).getCell(0).getStringCellValue()==null){
+                else if (sheet.getRow(0) == null || sheet.getRow(0).getCell(0) == null || sheet.getRow(0).getCell(0).getStringCellValue() == null || sheet.getRow(0).getCell(0).getStringCellValue().equals("")){
                     DB.writeExcelSheet(sheetName, 0, 0, fontWord.getText());
                     DB.writeExcelSheet(sheetName, 0, 1, backWord.getText());
                 }
