@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 class Add {
+    protected JComboBox comboBox;
     private ExcelMangement DB;
     private boolean comChecks = false;
     private ArrayList<String> sheetMenber = new ArrayList<>();
@@ -43,7 +44,7 @@ class Add {
         checkBoxTitle.setForeground(Color.white);
         JPanel textFieldPanel = new JPanel();
         String[] array = sheetMenber.toArray(new String[0]);
-        JComboBox comboBox = new JComboBox<>(array);
+        comboBox = new JComboBox<>(array);
         JPanel comPanel = new JPanel();
         JLabel textTitle = new JLabel("Title");
         JLabel textCom = new JLabel("Titel Selection");
@@ -70,9 +71,9 @@ class Add {
 
 
 
-        titleIn.setPreferredSize(new Dimension(262, 35));
-        fontWord.setPreferredSize(new Dimension(262, 35));
-        backWord.setPreferredSize(new Dimension(262, 35));
+        titleIn.setPreferredSize(new Dimension(300, 35));
+        fontWord.setPreferredSize(new Dimension(300, 35));
+        backWord.setPreferredSize(new Dimension(300, 35));
 
         comPanel.setLayout(new BoxLayout(comPanel,BoxLayout.Y_AXIS));
         comPanel.setBorder(new EmptyBorder(20,0,20,0));
@@ -109,7 +110,8 @@ class Add {
         textFieldPanel.add(fontPanel);
         textFieldPanel.add(backPanel);
         textFieldPanel.add(confirmFont);
-        textFieldPanel.setBorder(new EmptyBorder(50,0,0,0));
+        textFieldPanel.setBorder(new EmptyBorder(120,0,0,0));
+        textFieldPanel.setPreferredSize(new Dimension(720,540));
         addPage.add(textFieldPanel,BorderLayout.CENTER);
 
 //        Event in side
@@ -133,7 +135,7 @@ class Add {
                 if(comboBox.getSelectedIndex() >= 0){
                     comChecks = true;
                 }
-                else{
+                else {
                     comChecks = false;
                 }
             }
@@ -186,24 +188,25 @@ class Add {
         confirmFont.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(fontWord.getText().equalsIgnoreCase("") && backWord.getText().equalsIgnoreCase("")) {
-                    JOptionPane.showMessageDialog(null,"You input in Font Word text field please","Error",JOptionPane.ERROR_MESSAGE);
-                } else {
-                    String sheetName = (String) comboBox.getSelectedItem();
-                    Sheet sheet = DB.getWorkbook().getSheet(sheetName);
-                    int lastRowNum = 0;
-                    if(sheet != null && sheet.getRow(0) == null){
-                        lastRowNum = sheet.getLastRowNum();
-                    }
-                    else{
-                        lastRowNum = sheet.getLastRowNum()+1;
-                    }
+                String sheetName = (String) comboBox.getSelectedItem();
+                Sheet sheet = DB.getWorkbook().getSheet(sheetName);
+                int lastRowNum;
+                if (sheet == null) {
+                    JOptionPane.showMessageDialog(null, "Selected sheet not found in the workbook", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                else if(sheet.getRow(0).getCell(0).getStringCellValue()==null){
+                    DB.writeExcelSheet(sheetName, 0, 0, fontWord.getText());
+                    DB.writeExcelSheet(sheetName, 0, 1, backWord.getText());
+                }
+                else{
+                    lastRowNum = sheet.getLastRowNum() + 1;
                     DB.writeExcelSheet(sheetName, lastRowNum, 0, fontWord.getText());
                     DB.writeExcelSheet(sheetName, lastRowNum, 1, backWord.getText());
                 }
             }
-
         });
+
 //----------------------------------------------------------------------
 
 //  End Event
@@ -211,29 +214,5 @@ class Add {
         return addPage;
     }
 }
-class Quiz {
-    public Quiz(){}
-    public JPanel panelS(){
-        JPanel quizpage = new JPanel();
-        quizpage.setBackground(new Color(78,78,78));
-        JLabel t = new JLabel();
-        t.setBackground(new Color(78,78,78));
-        t.setForeground(Color.white);
-        t.setText("Quiz");
-        quizpage.add(t);
-        return quizpage;
-    }
-}
-class Match {
-    public Match(){}
-    public JPanel panelS(){
-        JPanel matchPage = new JPanel();
-        matchPage.setBackground(new Color(78,78,78));
-        JLabel t = new JLabel();
-        t.setBackground(new Color(78,78,78));
-        t.setForeground(Color.white);
-        t.setText("Match");
-        matchPage.add(t);
-        return matchPage;
-    }
-}
+
+

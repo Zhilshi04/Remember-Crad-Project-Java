@@ -24,8 +24,14 @@
               <text value="QUIZ"/>
             </properties>
           </component>
-          <component id="546a2" class="javax.swing.JButton" binding="matchButton">
+          <component id="546a2" class="javax.swing.JButton" binding="wordButton">
             <constraints border-constraint="South"/>
+            <properties>
+              <text value="Word"/>
+            </properties>
+          </component>
+          <component id="6af9c" class="javax.swing.JButton" binding="matchButton">
+            <constraints border-constraint="West"/>
             <properties>
               <text value="MACTH"/>
             </properties>
